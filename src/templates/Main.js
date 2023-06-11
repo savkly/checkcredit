@@ -262,7 +262,7 @@ export default class Main extends Component {
                 min={this.state.date}
                 defaultValue={this.state.cdpdatemin }
               /> */}
-              <Select onChange={e=>{this.setState({cdpmonth: e.target.value}); console.log(e.target.value)}} placeholder='Выберите месяц'>
+              <Select defaultValue={this.state.cdpmonth} onChange={e=>{this.setState({cdpmonth: e.target.value})}} placeholder='Выберите месяц'>
                 {this.grafic().map((el)=>(
                   <option value={el[6]}>{el[0]}</option>
                 ))}
@@ -271,7 +271,7 @@ export default class Main extends Component {
 
             <FormControl mt={4}>
               <FormLabel>Сумма погашения</FormLabel>
-              <NumberInput onChange={e=>this.setState({cdpsumm: e})} defaultValue='0' min={1} max={this.state.summ} >
+              <NumberInput onChange={e=>this.setState({cdpsumm: e})} defaultValue={this.state.cdpsumm} min={1} max={this.state.summ} >
                 <NumberInputField />
               </NumberInput>
             </FormControl>
