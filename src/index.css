@@ -21,3 +21,6 @@ code {
 .w100 {
   width: 100%;
 }
+.well {
+  display: block;
+}
