@@ -113,7 +113,7 @@ export default class Main extends Component {
     const sms = Number(this.state.sms);
     const precent = Number(this.state.precent) * 0.010000;
     const months = this.state.months;
-    const pdpdate = new Date(Date.parse(this.state.pdpdate+'T00:00:00'));
+    const pdpdate = new Date(this.state.pdpdate);
     let pdpmonth = 0
     let pdpyear = 0
     if (this.state.pdpdate) {
@@ -155,7 +155,7 @@ export default class Main extends Component {
         mes++
       }
       ostmonth -= 1
-      let justdate = new Date(Date.parse(year+'-'+mes+'-'+date.getDate()) + 'T00:00:00').toLocaleDateString() 
+      let justdate = date.getDate() +'/'+mes+'/'+year 
       if (index === months -1) {
           ret.push([justdate,pr + sj+summ2+sms,pr, sj+summ2, summ2-summ2, this.state.sms, index])
       }else{
