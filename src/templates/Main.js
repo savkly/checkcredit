@@ -155,14 +155,15 @@ export default class Main extends Component {
         mes++
       }
       ostmonth -= 1
+      let justdate = 'Ошибка'
       if(mes <= 9) {
-        let justdate = date.getDate() +'/0'+mes+'/'+year
+        justdate = date.getDate() +'/0'+mes+'/'+year
       }else if (date.getDate() <= 9 ) {
-        let justdate = '0'+date.getDate() +'/'+mes+'/'+year 
+        justdate = '0'+date.getDate() +'/'+mes+'/'+year 
       }else if (mes <= 9 && date.getDate() <= 9) {
-        let justdate = '0' + date.getDate() +'/0'+mes+'/'+year 
+        justdate = '0' + date.getDate() +'/0'+mes+'/'+year 
       }else{
-        let justdate = date.getDate() +'/'+mes+'/'+year 
+        justdate = date.getDate() +'/'+mes+'/'+year 
       }
       if (index === months -1) {
           ret.push([justdate,pr + sj+summ2+sms,pr, sj+summ2, summ2-summ2, this.state.sms, index])
