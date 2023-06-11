@@ -290,6 +290,7 @@ export default class Main extends Component {
                 <Center p={15} bg='white'>
                 <Heading>Расчет</Heading>
                 <Spacer />
+                <button onClick={e=>window.print()}> <Button>Печать</Button></button>
                 <button onClick={e=>this.setState({grafic: 'none', creditInput: 'hide'})}><Button>Закрыть</Button></button>
                 </Center>
                 <Center p={15}><Text fontSize="xl">Сумма кредита: {Intl.NumberFormat("ru", {style: "currency", currency: "RUB"}).format(this.state.summ)}</Text><Spacer/></Center>

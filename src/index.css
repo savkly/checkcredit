@@ -24,3 +24,10 @@ code {
 .well {
   display: block;
 }
+
+@media print {
+  @page {
+    margin: 0;
+    padding: 0;
+  }
+}
