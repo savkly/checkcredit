@@ -155,7 +155,7 @@ export default class Main extends Component {
         mes++
       }
       ostmonth -= 1
-      let justdate = new Date(year+'-'+mes+'-'+date.getDate()).toLocaleDateString() 
+      let justdate = new Date(Date.parse(year+'-'+mes+'-'+date.getDate()) + 'T00:00:00').toLocaleDateString() 
       if (index === months -1) {
           ret.push([justdate,pr + sj+summ2+sms,pr, sj+summ2, summ2-summ2, this.state.sms, index])
       }else{
