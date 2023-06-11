@@ -113,7 +113,7 @@ export default class Main extends Component {
     const sms = Number(this.state.sms);
     const precent = Number(this.state.precent) * 0.010000;
     const months = this.state.months;
-    const pdpdate = new Date(this.state.pdpdate);
+    const pdpdate = new Date(Date.parse(this.state.pdpdate+'T00:00:00'));
     let pdpmonth = 0
     let pdpyear = 0
     if (this.state.pdpdate) {
