@@ -45,10 +45,10 @@ export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      summ: 0,
-      precent: 0,
-      months: 0,
-      sms: 0,
+      summ: null,
+      precent: null,
+      months: null,
+      sms: null,
       date: this.dates(),
       creditInput: 'hide',
       grafic: 'none',
@@ -306,7 +306,7 @@ export default class Main extends Component {
               />
             </Box>
             <Box>
-              <Button w="100%" colorScheme='red' variant='outline' onClick={this.toggleModal}>ЧДП</Button>
+              {(this.state.summ > 0 && this.state.precent > 0 && this.state.months > 0)? (<Button w="100%" colorScheme='red' variant='outline' onClick={this.toggleModal}>ЧДП</Button>) : (<Button isLoading w="100%" colorScheme='red' variant='outline'>ЧДП</Button>)}
             </Box>
             <Box>
               {(this.state.summ > 0 && this.state.precent > 0 && this.state.months > 0) ? (<button className='w100' onClick={e=>this.setState({grafic: 'hide', creditInput: 'none'})}><Button w="100%" colorScheme='blue'>Расчитать</Button></button>) : (<button className='w100' disabled><Button isLoading w="100%" colorScheme='blue'>Расчитать</Button></button>)}
