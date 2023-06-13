@@ -309,7 +309,7 @@ export default class Main extends Component {
               <Button w="100%" colorScheme='red' variant='outline' onClick={this.toggleModal}>ЧДП</Button>
             </Box>
             <Box>
-              <button className='w100' onClick={e=>this.setState({grafic: 'hide', creditInput: 'none'})}><Button w="100%" colorScheme='blue'>Расчитать</Button></button>
+              {(this.state.summ > 0 && this.state.precent > 0 && this.state.months > 0) ? (<button className='w100' onClick={e=>this.setState({grafic: 'hide', creditInput: 'none'})}><Button w="100%" colorScheme='blue'>Расчитать</Button></button>) : (<button className='w100' disabled><Button isLoading w="100%" colorScheme='blue'>Расчитать</Button></button>)}
             </Box>
           </SimpleGrid>
           </Box>
