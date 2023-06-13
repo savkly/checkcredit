@@ -367,7 +367,7 @@ export default class Main extends Component {
                 </Center>
                 <Center p={15}><Text fontSize="xl">Сумма кредита: {Intl.NumberFormat("ru", {style: "currency", currency: "RUB"}).format(this.state.summ)}</Text><Spacer/></Center>
                 <Center p={15}><Text fontSize="xl">Сумма переплаты: {Intl.NumberFormat("ru-RU", {style: "currency", currency: "RUB"}).format(this.round10(this.sum(this.grafic().map(el=>{return el[2] / 2 }))), -2)}</Text><Spacer/></Center>
-                <Center p={15}><Text fontSize="xl">Процентная: {this.state.precent}%</Text><Spacer/></Center>
+                <Center p={15}><Text fontSize="xl">Процентная ставка: {this.state.precent}%</Text><Spacer/></Center>
                 <Center p={15}><Text fontSize="xl">Кол-во месяцев: {this.state.months}</Text><Spacer/></Center>
               <Center bg='white'>
               <TableContainer w="90%">
