@@ -10,6 +10,7 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react'
+import { IMaskInput } from 'react-imask'
 
 
 
@@ -44,9 +45,9 @@ export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      summ: 999000,
-      precent: 2.9,
-      months: 60,
+      summ: 0,
+      precent: 0,
+      months: 0,
       sms: 0,
       date: this.dates(),
       creditInput: 'hide',
@@ -125,12 +126,27 @@ export default class Main extends Component {
     const overpayment = this.overpayment();
     const date =  new Date(this.state.date);
     let summ2 = summ
-    let over = (precent/12*((1+precent/12))**months)/(((1+precent/12)**months)-1)
     let ej = overpayment * summ2
     let mes = date.getMonth()  + 1
     let year = date.getFullYear()
-    let ret = [[date.toLocaleDateString(), 0, 0, 0, summ, 0, 0]]
+    let datesone = 0
+    if(mes <= 9) {
+        datesone = date.getDate() +'.0'+mes+'.'+year
+      }else if (date.getDate() <= 9 ) {
+        datesone = '0'+date.getDate() +'.'+mes+'.'+year 
+      }else if (mes <= 9 && date.getDate() <= 9) {
+        datesone = '0' + date.getDate() +'.0'+mes+'.'+year 
+      }else{
+        datesone = date.getDate() +'.'+mes+'.'+year 
+      }
+    let ret = [[datesone, 0, 0, 0, summ, 0, 0]]
     let ostmonth = months - 1
+
+    let lastind = false
+    let fullsumej = 0
+    let fullsumpr = 0
+    let fullsumtelo = 0
+
 
     for (let index = 0; index < months; index++) {
       let pr = summ2 * precent * this.howMuchDays(year, mes) / this.days_of_a_year(year)
@@ -157,19 +173,32 @@ export default class Main extends Component {
       ostmonth -= 1
       let justdate = 'Ошибка'
       if(mes <= 9) {
-        justdate = date.getDate() +'/0'+mes+'/'+year
+        justdate = date.getDate() +'.0'+mes+'.'+year
       }else if (date.getDate() <= 9 ) {
-        justdate = '0'+date.getDate() +'/'+mes+'/'+year 
+        justdate = '0'+date.getDate() +'.'+mes+'.'+year 
       }else if (mes <= 9 && date.getDate() <= 9) {
-        justdate = '0' + date.getDate() +'/0'+mes+'/'+year 
+        justdate = '0' + date.getDate() +'.0'+mes+'.'+year 
       }else{
-        justdate = date.getDate() +'/'+mes+'/'+year 
+        justdate = date.getDate() +'.'+mes+'.'+year 
       }
       if (index === months -1) {
           ret.push([justdate,pr + sj+summ2+sms,pr, sj+summ2, summ2-summ2, this.state.sms, index])
+          fullsumej += pr + sj+summ2+sms
+          fullsumpr += pr
+          fullsumtelo += sj+summ2
       }else{
         ret.push([justdate,pr + sj + sms,pr, sj, summ2, this.state.sms, index])
+        fullsumej += pr + sj + sms
+        fullsumpr += pr
+        fullsumtelo += sj
       }
+      if (index === months - 1) {
+        lastind = true
+      }
+    }
+
+    if (lastind === true) {
+      ret.push(['Всего',fullsumej, fullsumpr, fullsumtelo, '', ''])
     }
     return ret
   }
@@ -196,8 +225,8 @@ export default class Main extends Component {
       <ChakraProvider>
         <Tabs padding={0} variant='enclosed' bg="#f5f7fa">
           <TabList>
-            <Tab>Кредитный калькулятор</Tab>
-            <Tab>ЛБК</Tab>
+            <Tab className='noprint'>Кредитный калькулятор</Tab>
+            <Tab className='noprint'>ЛБК</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -210,21 +239,63 @@ export default class Main extends Component {
           <SimpleGrid columns={2} spacing={5} minChildWidth='220px'>
             <Box>
               <Text mb='8px'>Сумма кредита</Text>
-              <NumberInput defaultValue={this.state.summ} min={10} max={999999999} onChange={e=>this.setState({summ: e})}>
+              {/* <NumberInput defaultValue={this.state.summ} min={10} max={999999999} onChange={e=>this.setState({summ: e})}>
                 <NumberInputField />
-              </NumberInput>
+              </NumberInput> */}
+              <IMaskInput 
+              
+              mask={Number}
+              thousandsSeparator=' '
+              radix=','
+              min={0}
+              className='inputcl'
+              max={999999999}
+              unmask={true}
+              defaultValue={this.state.summ}
+              onAccept={(value,mask) => this.setState({summ: Number(value)})}
+
+              />
             </Box>
             <Box>
               <Text mb='8px'>Процентная ставка</Text>
-              <NumberInput defaultValue={this.state.precent} min={1} max={99} step={0.2} onChange={e=>this.setState({precent: e})}>
+              {/* <NumberInput defaultValue={this.state.precent} min={1} max={99} step={0.2} onChange={e=>this.setState({precent: e})}>
                 <NumberInputField />
-              </NumberInput>
+              </NumberInput> */}
+              <IMaskInput 
+              
+              mask={Number}
+              scale={2}
+              signed={false}
+              thousandsSeparator=''
+              padFractionalZeros={false}
+              normalizeZeros={true}
+              radix=','
+              min={0}
+              className='inputcl'
+              max={99.99}
+              unmask={true}
+              defaultValue={this.state.precent}
+              onAccept={(value,mask) => this.setState({precent: Number(value)})}
+
+              />
             </Box>
             <Box>
               <Text mb='8px'>Кол-во месяцев</Text>
-              <NumberInput defaultValue={this.state.months} min={3} max={99} onChange={e=>this.setState({months: e})}>
+              {/* <NumberInput defaultValue={this.state.months} min={3} max={99} onChange={e=>this.setState({months: e})}>
                 <NumberInputField />
-              </NumberInput>
+              </NumberInput> */}
+              <IMaskInput 
+              
+              mask='000'
+              thousandsSeparator=''
+              min={0}
+              className='inputcl'
+              max={999}
+              unmask={true}
+              defaultValue={this.state.months}
+              onAccept={(value,mask) => this.setState({months: Number(value)})}
+
+              />
             </Box>
             <Box>
               <Text mb='8px'>Дата получения</Text>
@@ -263,7 +334,7 @@ export default class Main extends Component {
                 defaultValue={this.state.cdpdatemin }
               /> */}
               <Select defaultValue={this.state.cdpmonth} onChange={e=>{this.setState({cdpmonth: e.target.value})}} placeholder='Выберите месяц'>
-                {this.grafic().map((el)=>(
+                {this.grafic().slice(1, (this.state.months + 1)).map((el)=>(
                   <option value={el[6]}>{el[0]}</option>
                 ))}
               </Select>
@@ -290,11 +361,12 @@ export default class Main extends Component {
                 <Center p={15} bg='white'>
                 <Heading>Расчет</Heading>
                 <Spacer />
-                <button onClick={e=>window.print()}> <Button>Печать</Button></button>
-                <button onClick={e=>this.setState({grafic: 'none', creditInput: 'hide'})}><Button>Закрыть</Button></button>
+                <button className='noprint' onClick={e=>window.print()}> <Button>Печать</Button></button>
+                <Box w={5} />
+                <button className='noprint' onClick={e=>this.setState({grafic: 'none', creditInput: 'hide'})}><Button>Закрыть</Button></button>
                 </Center>
                 <Center p={15}><Text fontSize="xl">Сумма кредита: {Intl.NumberFormat("ru", {style: "currency", currency: "RUB"}).format(this.state.summ)}</Text><Spacer/></Center>
-                <Center p={15}><Text fontSize="xl">Сумма переплаты: {Intl.NumberFormat("ru-RU", {style: "currency", currency: "RUB"}).format(this.round10(this.sum(this.grafic().map(el=>el[2]))), -2)}</Text><Spacer/></Center>
+                <Center p={15}><Text fontSize="xl">Сумма переплаты: {Intl.NumberFormat("ru-RU", {style: "currency", currency: "RUB"}).format(this.round10(this.sum(this.grafic().map(el=>{return el[2] / 2 }))), -2)}</Text><Spacer/></Center>
                 <Center p={15}><Text fontSize="xl">Процентная: {this.state.precent}%</Text><Spacer/></Center>
                 <Center p={15}><Text fontSize="xl">Кол-во месяцев: {this.state.months}</Text><Spacer/></Center>
               <Center bg='white'>
